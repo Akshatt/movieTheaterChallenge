@@ -43,60 +43,105 @@ public class Allocator {
             String alloted = "";
             Boolean firstPriorityFull = false;
 
-            // 1st and 2nd priority seats
-            
+            // 1st priority seats
             if (!firstPriorityFull) {
 
-                //TODO : add 1 more pass by checking lastseatinrow
-
                 for (int i = mid; i< rows; i++) {
-                    int col = lastSeatInRow[i];
-                    
-                    while (col < 20 && rValue > 0 && lastSeatInRow[i] < 20){
-                        if (seatMap[i][col] == null) {
-                            seatMap[i][col] = rNum;
-                            alloted +=  ", " + (char)(i+65) + Integer.toString(col+1);
-                            rValue--;
-                            vacantSeats--;
-                        }
-                        col++;
-                    }
+                    if (rValue <= (columns - lastSeatInRow[i]) || rValue > columns) {
 
-                    lastSeatInRow[i] = col+3 > 19 ? 20 : col+3 ;
-                    vacantSeats -= (lastSeatInRow[i] - col);
-                    if (rValue == 0) break;
+                        if (v == 1) System.out.println("Pass 1");
+
+                        int col = lastSeatInRow[i];
+                    
+                        while (col < columns && rValue > 0 && lastSeatInRow[i] < columns){
+                            if (seatMap[i][col] == null) {
+                                seatMap[i][col] = rNum;
+                                alloted +=  ", " + (char)(i+65) + Integer.toString(col+1);
+                                rValue--;
+                                vacantSeats--;
+                            }
+                            col++;
+                        }
+
+                        lastSeatInRow[i] = col+3 > 19 ? columns : col+3 ;
+                        vacantSeats -= (lastSeatInRow[i] - col);
+                        if (rValue == 0) break;
+                    }
+                }
+
+                if (rValue != 0) {
+                    for (int i = mid; i< rows; i++) {
+                        int col = lastSeatInRow[i];
+                        if (v == 1) System.out.println("Pass 2");
+
+                        while (col < columns && rValue > 0 && lastSeatInRow[i] < columns){
+                            if (seatMap[i][col] == null) {
+                                seatMap[i][col] = rNum;
+                                alloted +=  ", " + (char)(i+65) + Integer.toString(col+1);
+                                rValue--;
+                                vacantSeats--;
+                            }
+                            col++;
+                        }
+    
+                        lastSeatInRow[i] = col+3 > 19 ? columns : col+3 ;
+                        vacantSeats -= (lastSeatInRow[i] - col);
+                        if (rValue == 0) break;
+                    }
                 }
             }
+                
 
-            //3rd seats 
+            //2nd Priority seats 
             if (rValue != 0) {
                 firstPriorityFull = true;
-                for (int i = mid -1; i >=0 ; i--) {
-                    int col = lastSeatInRow[i];
-                    
-                    while (col < 20 && rValue > 0 && lastSeatInRow[i] < 20){
-                        if (seatMap[i][col] == null) {
-                            seatMap[i][col] = rNum;
-                            alloted +=  ", " + (char)(i+65) + Integer.toString(col+1);
-                            
-                            rValue--;
-                            vacantSeats--;
-                        }
-                        col++;
-                    }
-
-                    lastSeatInRow[i] = col+3 > 19 ? 20 : col+3 ;
-                    vacantSeats -= (lastSeatInRow[i] - col);
-                    if (rValue == 0) break;
-                }
                 
+                for (int i = mid -1; i >=0 ; i--) {
+                    if (rValue <= (columns - lastSeatInRow[i]) || rValue > columns) {
+                        int col = lastSeatInRow[i];
+                    
+                        while (col < columns && rValue > 0 && lastSeatInRow[i] < columns){
+                            if (seatMap[i][col] == null) {
+                                seatMap[i][col] = rNum;
+                                alloted +=  ", " + (char)(i+65) + Integer.toString(col+1);
+                                
+                                rValue--;
+                                vacantSeats--;
+                            }
+                            col++;
+                        }
+
+                        lastSeatInRow[i] = col+3 > 19 ? columns : col+3 ;
+                        vacantSeats -= (lastSeatInRow[i] - col);
+                        if (rValue == 0) break;
+                    }
+                }
+                if (rValue != 0){
+                    for (int i = mid -1; i >=0 ; i--) {
+                        int col = lastSeatInRow[i];
+                        
+                        while (col < columns && rValue > 0 && lastSeatInRow[i] < columns){
+                            if (seatMap[i][col] == null) {
+                                seatMap[i][col] = rNum;
+                                alloted +=  ", " + (char)(i+65) + Integer.toString(col+1);
+                                
+                                rValue--;
+                                vacantSeats--;
+                            }
+                            col++;
+                        }
+    
+                        lastSeatInRow[i] = col+3 > 19 ? columns : col+3 ;
+                        vacantSeats -= (lastSeatInRow[i] - col);
+                        if (rValue == 0) break;
+                    }
+                }
             }
             if (v == 1) {
                 System.out.println( Arrays.toString( lastSeatInRow ));
                 printSeatMap();
                 System.out.println("Vacant seats : " + vacantSeats + "\n");
             }
-            
             
             reservations.put(rNum, alloted.substring(2));
             return 0;

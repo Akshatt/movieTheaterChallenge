@@ -22,6 +22,7 @@ _Customer Safety_ can be followed by keeping the following two assumptions in mi
 6. The reservation requests are sequentially ordered.
 7. If the requested number of seats exceeds the vacant seats then, the reservation request cannot be processed.
 8. A reservation request can only be processed if the requested seats are more than 0. 
+9. Better seats are preferred over consecutive seats for a group.  
 
 ## **Algorithm**
 > FOR request : requests

@@ -1,11 +1,19 @@
+package src.driver;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+import src.allocator.Allocator;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
 
 public class Driver {
     public static void main(String[] args) {
+        
         if (args.length > 0) {
+
+            Allocator seatAllocator = new Allocator();
+
             try {
                 File f = new File (args[0]); 
                 FileReader reserveReqs = new FileReader(f);
@@ -14,10 +22,13 @@ public class Driver {
                 String newReq = loadReqs.readLine();
             
                 while (newReq != null) {
-                    System.out.println(newReq);
+                    String output = seatAllocator.handleReq(newReq);
+                    System.out.println(output);
                     newReq = loadReqs.readLine();
                 }
-            
+                
+
+                reserveReqs.close();
             } catch (Exception e){
                 e.printStackTrace();
             }

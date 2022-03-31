@@ -1,4 +1,4 @@
-package src.allocator;
+package src.main.allocator;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,12 +24,12 @@ public class Allocator {
 
   LinkedHashMap<String, String> reservations = new LinkedHashMap<>();
 
-    public int handleReq(String newReq) {
+    public int handleReq(String newReq, int v) {
         String[] req = newReq.split(" ");
         String rNum = req[0];
         int rValue = Integer.parseInt(req[1]);
         
-        System.out.println("NEW PASS : " + rNum + " "+rValue);
+        if (v == 1) System.out.println("NEW REQUEST : " + rNum + " "+rValue);
 
         if (rValue < 1) {
             reservations.put(rNum, errorMsgs.get(1));
@@ -46,6 +46,10 @@ public class Allocator {
             // 1st and 2nd priority seats
             
             if (!firstPriorityFull) {
+
+                //TODO : add 1 more pass by checking lastseatinrow
+                //TODO: complete and add tests
+
                 for (int i = mid; i< rows; i++) {
                     int col = lastSeatInRow[i];
                     
@@ -68,9 +72,7 @@ public class Allocator {
             //3rd seats 
             if (rValue != 0) {
                 firstPriorityFull = true;
-                System.out.println(rValue);
                 for (int i = mid -1; i >=0 ; i--) {
-                    //System.out.println((char) (i + 65) + "\n");
                     int col = lastSeatInRow[i];
                     
                     while (col < 20 && rValue > 0 && lastSeatInRow[i] < 20){
@@ -90,10 +92,13 @@ public class Allocator {
                 }
                 
             }
+            if (v == 1) {
+                System.out.println( Arrays.toString( lastSeatInRow ));
+                printSeatMap();
+                System.out.println("Vacant seats : " + vacantSeats + "\n");
+            }
             
-            printSeatMap();
-            System.out.println( Arrays.toString( lastSeatInRow ));
-            System.out.println("Unav :" + vacantSeats);
+            
             reservations.put(rNum, alloted.substring(2));
             return 0;
         }

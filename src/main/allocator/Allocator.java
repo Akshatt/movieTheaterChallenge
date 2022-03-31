@@ -11,7 +11,6 @@ public class Allocator {
   int totalSeats = rows * columns;
   int vacantSeats = totalSeats;
   String[][] seatMap = new String[rows][columns];
-  String[][] seatXOMap = new String[rows][columns];
   int mid = (rows/2) - 2;
   int[] lastSeatInRow = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   
@@ -157,16 +156,6 @@ public class Allocator {
 			System.out.print((char) (i + 65) + " ");
 			for (int j = 0; j < columns; j++) {
 				System.out.print(" " + seatMap[i][j]);
-			}
-			System.out.println();
-		}
-    }
-    
-    public void printSeatXOMap() {
-        for (int i = 0; i < rows; i++) {
-			System.out.print((char) (i + 65) + " ");
-			for (int j = 0; j < columns; j++) {
-				System.out.print(" " + seatXOMap[i][j]);
 			}
 			System.out.println();
 		}

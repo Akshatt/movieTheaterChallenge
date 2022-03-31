@@ -38,7 +38,6 @@ public class Driver {
                         newReq = loadReqs.readLine();
                     }
                     
-                    // check seatmap
                     if (v == 1) {
                         System.out.println("\nFinal Seating Arrangements: \n");
                         seatAllocator.printSeatMap();

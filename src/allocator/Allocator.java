@@ -1,5 +1,6 @@
 package src.allocator;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.LinkedHashMap;
@@ -34,6 +35,7 @@ public class Allocator {
             reservations.put(rNum, errorMsgs.get(1));
         }
         else if (rValue > vacantSeats){
+            
             reservations.put(rNum, errorMsgs.get(2));
         } else {
             String alloted = "";
@@ -41,33 +43,11 @@ public class Allocator {
 
             // 1st and 2nd priority seats
            
-            for (int i = mid; i< rows; i++) {
-                //System.out.println((char) (i + 65) + "\n");
-                int col = lastSeatInRow[i];
-                while (col < 20 && rValue > 0 && lastSeatInRow[i] != 19){
-                    if (seatMap[i][col] == null) {
-                        seatMap[i][col] = rNum;
-                        alloted +=  ", " + (char)(i+65) + Integer.toString(col+1);
-                        
-                        rValue--;
-                        vacantSeats--;
-                    }
-                    col++;
-                }
-                lastSeatInRow[i] = col+3;
-                
-                if (rValue == 0){
-                    vacantSeats -= 3;
-                    break;
-                }
-            }
-
-            //3rd seats 
-            if (rValue != 0) {
-                for (int i = 0; i< mid; i++) {
+            if (!firstPriorityFull) {
+                for (int i = mid; i< rows; i++) {
                     //System.out.println((char) (i + 65) + "\n");
                     int col = lastSeatInRow[i];
-                    while (col < 20 && rValue > 0 && lastSeatInRow[i] != 19){
+                    while (col < 20 && rValue > 0 && lastSeatInRow[i] < 20){
                         if (seatMap[i][col] == null) {
                             seatMap[i][col] = rNum;
                             alloted +=  ", " + (char)(i+65) + Integer.toString(col+1);
@@ -77,16 +57,60 @@ public class Allocator {
                         }
                         col++;
                     }
-                    lastSeatInRow[i] = col+3;
-                    if (rValue == 0){
+                    
+                    if (col+3 > 19) {
+                        lastSeatInRow[i] = 20;
+                        if (rValue ==0 ) vacantSeats -= (20 - col);
+    
+                    } else {
+                        lastSeatInRow[i] = col+3;
                         vacantSeats -= 3;
+                    }
+                    
+                    if (rValue == 0){
+                        break;
+                    }
+                }
+            }
+
+            //3rd seats 
+            if (rValue != 0) {
+                firstPriorityFull = true;
+                System.out.println(rValue);
+                for (int i = mid -1; i >=0 ; i--) {
+                    //System.out.println((char) (i + 65) + "\n");
+                    int col = lastSeatInRow[i];
+                    
+                    while (col < 20 && rValue > 0 && lastSeatInRow[i] < 20){
+                        if (seatMap[i][col] == null) {
+                            seatMap[i][col] = rNum;
+                            alloted +=  ", " + (char)(i+65) + Integer.toString(col+1);
+                            
+                            rValue--;
+                            vacantSeats--;
+                        }
+                        col++;
+                    }
+                    
+                    if (col+3 > 19) {
+                        lastSeatInRow[i] = 20;
+                        if (rValue ==0 ) vacantSeats -= (20 - col);
+                    } else {
+                        lastSeatInRow[i] = col+3;
+                        vacantSeats -= 3;
+                    }
+                    
+                    if (rValue == 0){
                         break;
                     }
     
                 }
+                
             }
             
-            //printSeatMap();
+            printSeatMap();
+            System.out.println( Arrays.toString( lastSeatInRow ));
+            System.out.println("Unav :" + vacantSeats);
             reservations.put(rNum, alloted.substring(2));
         }
     }

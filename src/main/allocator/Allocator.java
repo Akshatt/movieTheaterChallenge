@@ -48,7 +48,6 @@ public class Allocator {
             if (!firstPriorityFull) {
 
                 //TODO : add 1 more pass by checking lastseatinrow
-                //TODO: complete and add tests
 
                 for (int i = mid; i< rows; i++) {
                     int col = lastSeatInRow[i];

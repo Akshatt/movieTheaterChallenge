@@ -60,7 +60,7 @@ _Runtime_ : O (n (2mk)) $\sim$ O(nmk) where,
     - execute the program with the input file path:
         > java src/main/driver/Driver InputFilePath
     - testing the program:
-        > java src/main/driver/Driver test 
+        > java -ea src/main/driver/Driver test 
     - For verbose output: 
         > java src/main/driver/Driver InputFilePath verbose
 

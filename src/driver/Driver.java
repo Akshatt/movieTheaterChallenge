@@ -30,6 +30,9 @@ public class Driver {
                     seatAllocator.handleReq(newReq);
                     newReq = loadReqs.readLine();
                 }
+                
+                // check seatmap
+                seatAllocator.printSeatMap();
 
                 reserveReqs.close();
 

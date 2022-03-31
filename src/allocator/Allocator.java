@@ -2,6 +2,7 @@ package src.allocator;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class Allocator {
   int rows = 10;
@@ -15,14 +16,22 @@ public class Allocator {
         errorMsgs.put(1,"Invalid number of seats requested!");
         errorMsgs.put(2,"Number of seats requested are unavailable!");  
     }
+
+  LinkedHashMap<String, String> reservations = new LinkedHashMap<>();
     
-    public String handleReq(String newReq) {
+    public void handleReq(String newReq) {
         String[] req = newReq.split(" ");
         String rNum = req[0];
         int rValue = Integer.parseInt(req[1]);
         if (rValue < 1) {
-            return rNum + " "+ errorMsgs.get(1);
+            reservations.put(rNum, errorMsgs.get(1));
         }
-        return rNum + " " + rValue; 
+        else {
+            reservations.put(rNum, Integer.toString(rValue));
+        }
+    }
+
+    public LinkedHashMap<String, String> getReservations() {
+        return reservations;
     }
 }

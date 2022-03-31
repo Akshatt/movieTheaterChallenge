@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.util.Map;
 
 import src.allocator.Allocator;
+import src.test.testAllocation;
 
 import java.io.File;
 
@@ -51,7 +52,11 @@ public class Driver {
 
             } catch (Exception e){
                 e.printStackTrace();
-            } 
+            }
+            if (args[1].equals("test")) {
+            testAllocation tester = new testAllocation();
+            tester.runTests();
+        }           
         }       
 
     }

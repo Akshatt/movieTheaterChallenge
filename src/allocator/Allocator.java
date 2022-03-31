@@ -24,7 +24,7 @@ public class Allocator {
 
   LinkedHashMap<String, String> reservations = new LinkedHashMap<>();
 
-    public void handleReq(String newReq) {
+    public int handleReq(String newReq) {
         String[] req = newReq.split(" ");
         String rNum = req[0];
         int rValue = Integer.parseInt(req[1]);
@@ -33,11 +33,13 @@ public class Allocator {
 
         if (rValue < 1) {
             reservations.put(rNum, errorMsgs.get(1));
+            return -1;
         }
         else if (rValue > vacantSeats){
-            
             reservations.put(rNum, errorMsgs.get(2));
-        } else {
+            return 1;
+        } 
+        else {
             String alloted = "";
             Boolean firstPriorityFull = false;
 
@@ -93,6 +95,7 @@ public class Allocator {
             System.out.println( Arrays.toString( lastSeatInRow ));
             System.out.println("Unav :" + vacantSeats);
             reservations.put(rNum, alloted.substring(2));
+            return 0;
         }
     }
 

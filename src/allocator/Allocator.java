@@ -23,7 +23,7 @@ public class Allocator {
     }
 
   LinkedHashMap<String, String> reservations = new LinkedHashMap<>();
-    
+
     public void handleReq(String newReq) {
         String[] req = newReq.split(" ");
         String rNum = req[0];
@@ -42,34 +42,24 @@ public class Allocator {
             Boolean firstPriorityFull = false;
 
             // 1st and 2nd priority seats
-           
+            
             if (!firstPriorityFull) {
                 for (int i = mid; i< rows; i++) {
-                    //System.out.println((char) (i + 65) + "\n");
                     int col = lastSeatInRow[i];
+                    
                     while (col < 20 && rValue > 0 && lastSeatInRow[i] < 20){
                         if (seatMap[i][col] == null) {
                             seatMap[i][col] = rNum;
                             alloted +=  ", " + (char)(i+65) + Integer.toString(col+1);
-                            
                             rValue--;
                             vacantSeats--;
                         }
                         col++;
                     }
-                    
-                    if (col+3 > 19) {
-                        lastSeatInRow[i] = 20;
-                        if (rValue ==0 ) vacantSeats -= (20 - col);
-    
-                    } else {
-                        lastSeatInRow[i] = col+3;
-                        vacantSeats -= 3;
-                    }
-                    
-                    if (rValue == 0){
-                        break;
-                    }
+
+                    lastSeatInRow[i] = col+3 > 19 ? 20 : col+3 ;
+                    vacantSeats -= (lastSeatInRow[i] - col);
+                    if (rValue == 0) break;
                 }
             }
 
@@ -91,19 +81,10 @@ public class Allocator {
                         }
                         col++;
                     }
-                    
-                    if (col+3 > 19) {
-                        lastSeatInRow[i] = 20;
-                        if (rValue ==0 ) vacantSeats -= (20 - col);
-                    } else {
-                        lastSeatInRow[i] = col+3;
-                        vacantSeats -= 3;
-                    }
-                    
-                    if (rValue == 0){
-                        break;
-                    }
-    
+
+                    lastSeatInRow[i] = col+3 > 19 ? 20 : col+3 ;
+                    vacantSeats -= (lastSeatInRow[i] - col);
+                    if (rValue == 0) break;
                 }
                 
             }
